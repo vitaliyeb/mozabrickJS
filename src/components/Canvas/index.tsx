@@ -1,10 +1,18 @@
+import {ITreatmentConfig} from "../../types";
+import React from "react";
 
 
+type CanvasProps = {
+    treatmentConfig: ITreatmentConfig
+}
 
-const Canvas = () => {
+const Canvas: React.FC<CanvasProps> = () => {
+
     return (
         <div>
-            canvas
+            <canvas
+
+            />
         </div>
     )
 }

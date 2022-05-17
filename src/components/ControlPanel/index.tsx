@@ -4,7 +4,7 @@
 const ControlPanel = () => {
     return (
         <div>
-            test
+
         </div>
     )
 }
