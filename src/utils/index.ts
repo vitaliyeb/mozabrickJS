@@ -1,2 +1,4 @@
-import { default as HEXtoDEC } from './HEXtoDEC';
-import { default as DECtoHEX } from './DECtoHEX';
+import HEXtoDEC from './HEXtoDEC';
+import DECtoHEX from './DECtoHEX';
+import averageTransformationToGray from "./averageTransformationToGray";
+import DECtoGrayHEX from "./DECtoGrayHEX";
