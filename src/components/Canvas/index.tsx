@@ -16,18 +16,34 @@ const Canvas: React.FC<CanvasProps> = () => {
     useEffect(() => {
         const canvas = canvasRef.current as HTMLCanvasElement;
         const context2D = canvas.getContext('2d') as CanvasRenderingContext2D;
+        const image = new Image(width, height);
+        image.src = '/gachi.jpeg';
 
-        for(let x = 1; x <= width; x++) {
-            for(let y = 1; y <= height; y++) {
-                const bit = DECtoGrayHEX(Math.ceil([0,0,0].reduce(acc => (acc + Math.ceil(Math.random() * 256)), 0) / 3));
+        image.onload = () => {
+            context2D.drawImage(image, 0, 0, width, height);
+            const imageData = context2D.getImageData(0, 0, width, height);
+            const data = imageData.data;
 
-                // console.log(bit);
-                context2D.fillStyle = bit;
-                context2D.fillRect(x, y, 1, 1);
-
+            for (var i = 0; i < data.length; i += 4) {
+                var avg = (data[i] * 0.3 + data[i + 1] * 0.59 + data[i+2]*0.11);
+                data[i]     = avg; // red
+                data[i + 1] = avg; // green
+                data[i + 2] = avg; // blue
             }
-
+            context2D.putImageData(imageData, 0, 0);
         }
+
+        // for(let x = 1; x <= width; x++) {
+        //     for(let y = 1; y <= height; y++) {
+        //         const bit = DECtoGrayHEX(Math.ceil([0,0,0].reduce(acc => (acc + Math.ceil(Math.random() * 256)), 0) / 3));
+        //
+        //         // console.log(bit);
+        //         context2D.fillStyle = bit;
+        //         context2D.fillRect(x, y, 1, 1);
+        //
+        //     }
+        //
+        // }
 
     }, []);
 
