@@ -14,12 +14,16 @@ type CanvasProps = {
 
 const Canvas: React.FC<CanvasProps> = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const canvas2Ref = useRef<HTMLCanvasElement>(null);
     const width = 300;
     const height = 300;
     const mask = [
-        [0.11,0.11,0.11],
-        [0.11,0.11,0.11],
-        [0.11,0.11,0.11]
+        // [-1,0,1],
+        // [-5,0,5],
+        // [-1,0,1]
+        [1,1,1],
+        [0,0,-1],
+        [-1,-1,-1]
     ]
 
 
@@ -46,25 +50,17 @@ const Canvas: React.FC<CanvasProps> = () => {
 
             context2D.putImageData(img, 0, 0);
         }
-
-        // for(let x = 1; x <= width; x++) {
-        //     for(let y = 1; y <= height; y++) {
-        //         const bit = DECtoGrayHEX(Math.ceil([0,0,0].reduce(acc => (acc + Math.ceil(Math.random() * 256)), 0) / 3));
-        //
-        //         // console.log(bit);
-        //         context2D.fillStyle = bit;
-        //         context2D.fillRect(x, y, 1, 1);
-        //
-        //     }
-        //
-        // }
-
     }, []);
 
     return (
         <div>
             <canvas
                 ref={canvasRef}
+                width={width}
+                height={width}
+            />
+            <canvas
+                ref={canvas2Ref}
                 width={width}
                 height={width}
             />

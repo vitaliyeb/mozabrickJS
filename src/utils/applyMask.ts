@@ -2,6 +2,7 @@
 
 const applyMask = (matrix: number[][], mask: number[][]) => {
     const cMatrix = 1;
+    const newMatrix = matrix.map(i => [...i]);
     for (let r = 0; r < matrix.length; r++) {
         for (let c = 0; c < matrix[r].length; c++) {
             let acc = 0;
@@ -14,10 +15,10 @@ const applyMask = (matrix: number[][], mask: number[][]) => {
                     acc += (value * mask[maskRow][maskCol]);
                 };
             }
-            matrix[r][c] = acc;
+            newMatrix[r][c] = acc;
         };
     }
-    return matrix;
+    return newMatrix;
 }
 
 export default applyMask;
