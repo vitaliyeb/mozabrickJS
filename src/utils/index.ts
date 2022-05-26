@@ -6,3 +6,4 @@ import getLog from "./getLog";
 import getMatrixFromImageData from './getMatrixFromImageData';
 import applyMask from './applyMask';
 import matrixToPicture from './matrixToPicture';
+import returnColor from './returnColor';
