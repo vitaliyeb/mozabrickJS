@@ -10,6 +10,7 @@ import applyMask from "../../utils/applyMask";
 import matrixToPicture from "../../utils/matrixToPicture";
 import returnColor from "../../utils/returnColor";
 import * as Plotly from "plotly.js";
+import imageToPixels from "../../utils/imageToPixels";
 
 
 type CanvasProps = {
@@ -45,39 +46,9 @@ const Canvas: React.FC<CanvasProps> = () => {
             context22D.drawImage(image, 0, 0, width, height);
             const imageData = context2D.getImageData(0, 0, width, height);
             const data = imageData.data;
-            const lineSize = width * 4;
-            const clustersOfHorizontally = width / cell;
-            const clustersOfVertically = height / cell;
-            const cellArea = cell**2;
 
-            for (let row = 0; row < clustersOfVertically; row++){
-                for (let col = 0; col < clustersOfHorizontally; col++){
-                    const startPosition = row * (cellArea * clustersOfVertically * 4) + col * (cell * 4);
-                    const colorsStore = {red: 0, green: 0, blue: 0};
-                    for (let itr = 0; itr < cell; itr++) {
-                        const position = startPosition + itr * lineSize;
-                        for (let pxl = 0; pxl < cell; pxl++) {
-                            const pxlPosition = position + pxl * 4;
-                            colorsStore.red+=data[pxlPosition];
-                            colorsStore.green+=data[pxlPosition + 1];
-                            colorsStore.blue+= data[pxlPosition + 2];
-                        }
-                    }
-                    colorsStore.red/=cellArea;
-                    colorsStore.green/=cellArea;
-                    colorsStore.blue/=cellArea;
-                    for (let itr = 0; itr < cell; itr++) {
-                        const position = startPosition + itr * lineSize;
-                        for (let pxl = 0; pxl < cell; pxl++) {
-                            const pxlPosition = position + pxl * 4;
-                            data[pxlPosition] = colorsStore.red;
-                            data[pxlPosition + 1] = colorsStore.green;
-                            data[pxlPosition + 2] = colorsStore.blue;
-                        }
-                    }
-                }
-            }
             // console.log(data);
+            const pixels = imageToPixels(imageData, cell);
 
             // for (var i = 0; i < data.length; i += 4) {
             //     var avg = (data[i] * 0.3 + data[i + 1] * 0.59 + data[i + 2] * 0.11);
@@ -90,7 +61,7 @@ const Canvas: React.FC<CanvasProps> = () => {
             // const img = matrixToPicture(applyMask(matrix, mask), imageData);
             // const colorsImg = returnColor(imageData);
 
-            context2D.putImageData(imageData, 0, 0);
+            context2D.putImageData(pixels, 0, 0);
         }
     }, []);
 

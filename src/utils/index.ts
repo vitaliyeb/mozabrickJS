@@ -7,3 +7,4 @@ import getMatrixFromImageData from './getMatrixFromImageData';
 import applyMask from './applyMask';
 import matrixToPicture from './matrixToPicture';
 import returnColor from './returnColor';
+import imageToPixels from './imageToPixels';
