@@ -1,5 +1,5 @@
 import {ITreatmentConfig} from "../../types";
-import React, {useEffect, useRef} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import Plot from 'react-plotly.js';
 // import {Plot}
 import DECtoHEX from "../../utils/DECtoHEX";
@@ -11,6 +11,7 @@ import matrixToPicture from "../../utils/matrixToPicture";
 import returnColor from "../../utils/returnColor";
 import * as Plotly from "plotly.js";
 import imageToPixels from "../../utils/imageToPixels";
+import extractPalette from "../../utils/extractPalette";
 
 
 type CanvasProps = {
@@ -21,6 +22,7 @@ const Canvas: React.FC<CanvasProps> = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const canvas2Ref = useRef<HTMLCanvasElement>(null);
     const canvas3Ref = useRef<HTMLCanvasElement>(null);
+    const [palette, setPalette] = useState<string[]>([]);
     const width = 300;
     const height = 300;
     const cell = 10;
@@ -48,7 +50,16 @@ const Canvas: React.FC<CanvasProps> = () => {
             const data = imageData.data;
 
             // console.log(data);
-            const pixels = imageToPixels(imageData, cell);
+            // const pixels = imageToPixels(imageData, cell);
+
+            const palette = extractPalette(imageData);
+
+
+            setPalette(palette.map(({r,g,b}): string => `#${DECtoHEX(r)}${DECtoHEX(g)}${DECtoHEX(b)}`))
+
+
+
+
 
             // for (var i = 0; i < data.length; i += 4) {
             //     var avg = (data[i] * 0.3 + data[i + 1] * 0.59 + data[i + 2] * 0.11);
@@ -61,45 +72,57 @@ const Canvas: React.FC<CanvasProps> = () => {
             // const img = matrixToPicture(applyMask(matrix, mask), imageData);
             // const colorsImg = returnColor(imageData);
 
-            context2D.putImageData(pixels, 0, 0);
+            context2D.putImageData(imageData, 0, 0);
         }
     }, []);
 
 
-        let data = [] as Plotly.Data[];
-        let layout = {
-            margin: {
-                l: 0,
-                r: 0,
-                b: 0,
-                t: 0
-            }
-        };
+    let data = [] as Plotly.Data[];
+    let layout = {
+        margin: {
+            l: 0,
+            r: 0,
+            b: 0,
+            t: 0
+        }
+    };
 
 
-        return (
+    return (
+        <div>
+            <canvas
+                ref={canvasRef}
+                width={width}
+                height={width}
+            />
+            <canvas
+                ref={canvas2Ref}
+                width={width}
+                height={width}
+            />
+            <canvas
+                ref={canvas3Ref}
+                width={width}
+                height={width}
+            />
             <div>
-                <canvas
-                    ref={canvasRef}
-                    width={width}
-                    height={width}
-                />
-                <canvas
-                    ref={canvas2Ref}
-                    width={width}
-                    height={width}
-                />
-                <canvas
-                    ref={canvas3Ref}
-                    width={width}
-                    height={width}
-                />
-                {/*<Plot*/}
-                {/*    data={data}*/}
-                {/*    layout={layout}*/}
-                {/*/>*/}
+                {
+                    palette.map(color => (<div
+                        key={color}
+                        style={{
+                            backgroundColor: color,
+                            width: '50px',
+                            height: '50px'
+                        }}
+                    />))
+                }
             </div>
-        )
-    }
+            {/*<Plot*/}
+            {/*    data={data}*/}
+            {/*    layout={layout}*/}
+            {/*/>*/}
+        </div>
+    )
+}
 
-    export default Canvas;
+export default Canvas;
