@@ -1,7 +1,5 @@
 import {ITreatmentConfig} from "../../types";
 import React, {useEffect, useRef, useState} from "react";
-import Plot from 'react-plotly.js';
-// import {Plot}
 import DECtoHEX from "../../utils/DECtoHEX";
 import DECtoGrayHEX from "../../utils/DECtoGrayHEX";
 import getLog from "../../utils/getLog";
@@ -20,8 +18,6 @@ type CanvasProps = {
 
 const Canvas: React.FC<CanvasProps> = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const canvas2Ref = useRef<HTMLCanvasElement>(null);
-    const canvas3Ref = useRef<HTMLCanvasElement>(null);
     const [palette, setPalette] = useState<string[]>([]);
     const width = 300;
     const height = 300;
@@ -35,31 +31,22 @@ const Canvas: React.FC<CanvasProps> = () => {
     useEffect(() => {
         const canvas = canvasRef.current as HTMLCanvasElement;
         const context2D = canvas.getContext('2d') as CanvasRenderingContext2D;
-        const canvas2 = canvas2Ref.current as HTMLCanvasElement;
-        const context22D = canvas2.getContext('2d') as CanvasRenderingContext2D;
-        const canvas3 = canvas2Ref.current as HTMLCanvasElement;
-        const context32D = canvas3.getContext('2d') as CanvasRenderingContext2D;
         const image = new Image(width, height);
         const grayArray: any = [];
         image.src = '/gachi.jpeg';
 
         image.onload = () => {
             context2D.drawImage(image, 0, 0, width, height);
-            context22D.drawImage(image, 0, 0, width, height);
             const imageData = context2D.getImageData(0, 0, width, height);
             const data = imageData.data;
 
             // console.log(data);
             // const pixels = imageToPixels(imageData, cell);
 
-            const palette = extractPalette(imageData);
-
-
-            setPalette(palette.map(({r,g,b}): string => `#${DECtoHEX(r)}${DECtoHEX(g)}${DECtoHEX(b)}`))
-
-
-
-
+            // const palette = extractPalette(imageData);
+            //
+            //
+            // setPalette(palette.map(({r,g,b}): string => `#${DECtoHEX(r)}${DECtoHEX(g)}${DECtoHEX(b)}`))
 
             // for (var i = 0; i < data.length; i += 4) {
             //     var avg = (data[i] * 0.3 + data[i + 1] * 0.59 + data[i + 2] * 0.11);
@@ -92,16 +79,6 @@ const Canvas: React.FC<CanvasProps> = () => {
         <div>
             <canvas
                 ref={canvasRef}
-                width={width}
-                height={width}
-            />
-            <canvas
-                ref={canvas2Ref}
-                width={width}
-                height={width}
-            />
-            <canvas
-                ref={canvas3Ref}
                 width={width}
                 height={width}
             />
