@@ -37,7 +37,6 @@ const extractPalette = ({data}: ImageData, ): IRGBPixel[] => {
         const gRange = gMax - gMin;
         const bRange = bMax - bMin;
 
-        // determine which color has the biggest difference
         const biggestRange = Math.max(rRange, gRange, bRange);
         if (biggestRange === rRange) {
             return "r";
@@ -49,7 +48,7 @@ const extractPalette = ({data}: ImageData, ): IRGBPixel[] => {
     };
 
     const quantization = (colors: IRGBPixel[], depth: number): IRGBPixel[] => {
-        const MAX_DEPTH = 1;
+        const MAX_DEPTH = 4;
 
         if (depth === MAX_DEPTH || colors.length === 0) {
             const color = colors.reduce(

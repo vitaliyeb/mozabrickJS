@@ -8,20 +8,28 @@ function App() {
     const [config, updateConfig] = useReducer((prevState: ITreatmentConfig, updateState: Partial<ITreatmentConfig>) => {
         return {...prevState, ...updateState};
     }, {
-        size: 100,
+        imageSize: {
+            width: 0,
+            height: 0
+        },
+        size: {
+            value: 0,
+            min: 0,
+            max: 0
+        },
         brightness: 0,
         contrast: 1,
         baw: true,
         edges: false,
-        colorCount: false,
+        colorCount: 4,
     })
 
-  return (
-    <div className="App">
-      <ControlPanel />
-      <Canvas treatmentConfig={config}/>
-    </div>
-  );
+    return (
+        <div className="App">
+            <ControlPanel/>
+            <Canvas treatmentConfig={config}/>
+        </div>
+    );
 }
 
 export default App;

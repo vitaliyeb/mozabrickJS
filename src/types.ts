@@ -1,9 +1,19 @@
 
+export interface IRange<T extends number | string> {
+    value: T;
+    min: T;
+    max: T;
+}
+
 export interface ITreatmentConfig {
-    size: 100,
-    brightness: 0,
-    contrast: 1,
-    baw: true,
-    edges: false,
-    colorCount: false,
+    imageSize: {
+        width: number,
+        height: number
+    },
+    size: IRange<number>,
+    brightness: number,
+    contrast: number,
+    baw: boolean,
+    edges: boolean,
+    colorCount: number,
 };

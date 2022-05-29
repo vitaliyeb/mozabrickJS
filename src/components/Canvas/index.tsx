@@ -21,7 +21,7 @@ const Canvas: React.FC<CanvasProps> = () => {
     const [palette, setPalette] = useState<string[]>([]);
     const width = 300;
     const height = 300;
-    const cell = 10;
+    const cell = 100;
     const mask = [
         [-1, 0, 1],
         [-5, 0, 5],
@@ -41,25 +41,25 @@ const Canvas: React.FC<CanvasProps> = () => {
             const data = imageData.data;
 
             // console.log(data);
-            // const pixels = imageToPixels(imageData, cell);
-
+            const pixels = imageToPixels(imageData, cell);
+            //
             // const palette = extractPalette(imageData);
             //
             //
             // setPalette(palette.map(({r,g,b}): string => `#${DECtoHEX(r)}${DECtoHEX(g)}${DECtoHEX(b)}`))
 
-            // for (var i = 0; i < data.length; i += 4) {
-            //     var avg = (data[i] * 0.3 + data[i + 1] * 0.59 + data[i + 2] * 0.11);
-            //     data[i] = avg; // red
-            //     data[i + 1] = avg; // green
-            //     data[i + 2] = avg; // blue
-            //     grayArray.push(avg);
-            // }
+            for (var i = 0; i < data.length; i += 4) {
+                var avg = (data[i] * 0.3 + data[i + 1] * 0.59 + data[i + 2] * 0.11);
+                data[i] = avg; // red
+                data[i + 1] = avg; // green
+                data[i + 2] = avg; // blue
+                grayArray.push(avg);
+            }
             // const matrix = getMatrixFromImageData(grayArray, width, height);
             // const img = matrixToPicture(applyMask(matrix, mask), imageData);
             // const colorsImg = returnColor(imageData);
 
-            context2D.putImageData(imageData, 0, 0);
+            context2D.putImageData(pixels, 0, 0);
         }
     }, []);
 
