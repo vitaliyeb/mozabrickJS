@@ -17,17 +17,26 @@ function App() {
             min: 0,
             max: 0
         },
-        brightness: 0,
-        contrast: 1,
+        brightness: {
+            value: 100,
+            min: 0,
+            max: 200
+        },
+        contrast: {
+            value: 100,
+            min: 0,
+            max: 200
+        },
         baw: true,
         edges: false,
         colorCount: 4,
     })
 
+
     return (
         <div className="App">
-            <ControlPanel/>
-            <Canvas treatmentConfig={config}/>
+            <ControlPanel updateConfig={updateConfig} config={config}/>
+            <Canvas config={config}/>
         </div>
     );
 }

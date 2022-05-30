@@ -11,8 +11,8 @@ export interface ITreatmentConfig {
         height: number
     },
     size: IRange<number>,
-    brightness: number,
-    contrast: number,
+    brightness: IRange<number>,
+    contrast: IRange<number>,
     baw: boolean,
     edges: boolean,
     colorCount: number,
