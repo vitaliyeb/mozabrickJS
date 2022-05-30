@@ -9,6 +9,7 @@ import matrixToPicture from "../../utils/matrixToPicture";
 import returnColor from "../../utils/returnColor";
 import * as Plotly from "plotly.js";
 import imageToPixels from "../../utils/imageToPixels";
+import extractPalette from "../../utils/extractPalette";
 
 
 type CanvasProps = {
@@ -18,8 +19,8 @@ type CanvasProps = {
 const Canvas: React.FC<CanvasProps> = ({config}) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [palette, setPalette] = useState<string[]>([]);
-    const width = 300;
-    const height = 300;
+    const width = 1200;
+    const height = 1200;
     const cell = 10;
     const mask = [
         [-1, 0, 1],
@@ -36,18 +37,17 @@ const Canvas: React.FC<CanvasProps> = ({config}) => {
 
         image.onload = () => {
             context2D.filter = `brightness(${config.brightness.value}%) contrast(${config.contrast.value}%)`;
-            // context2D.filter = ``;
             context2D.drawImage(image, 0, 0, width, height);
 
             const imageData = context2D.getImageData(0, 0, width, height);
             const data = imageData.data;
+            const palette = extractPalette(imageData, config.colorCount);
 
-            // const pixels = imageToPixels(imageData, cell);
-            //
-            // const palette = extractPalette(imageData);
-            //
-            //
-            // setPalette(palette.map(({r,g,b}): string => `#${DECtoHEX(r)}${DECtoHEX(g)}${DECtoHEX(b)}`))
+            const pixels = imageToPixels(imageData, cell, palette);
+
+
+
+            setPalette(palette.map(({r,g,b}): string => `#${DECtoHEX(r)}${DECtoHEX(g)}${DECtoHEX(b)}`))
 
             // for (var i = 0; i < data.length; i += 4) {
             //     var avg = (data[i] * 0.3 + data[i + 1] * 0.59 + data[i + 2] * 0.11);
@@ -83,18 +83,18 @@ const Canvas: React.FC<CanvasProps> = ({config}) => {
                 width={width}
                 height={width}
             />
-            {/*<div>*/}
-            {/*    {*/}
-            {/*        palette.map(color => (<div*/}
-            {/*            key={color}*/}
-            {/*            style={{*/}
-            {/*                backgroundColor: color,*/}
-            {/*                width: '50px',*/}
-            {/*                height: '50px'*/}
-            {/*            }}*/}
-            {/*        />))*/}
-            {/*    }*/}
-            {/*</div>*/}
+            <div style={{display: 'flex'}}>
+                {
+                    palette.map((color, i) => (<div
+                        key={i}
+                        style={{
+                            backgroundColor: color,
+                            width: '50px',
+                            height: '50px'
+                        }}
+                    />))
+                }
+            </div>
             {/*<Plot*/}
             {/*    data={data}*/}
             {/*    layout={layout}*/}

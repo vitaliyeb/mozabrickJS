@@ -1,5 +1,6 @@
+import {IRGBPixel} from "./extractPalette";
 
-const imageToPixels = (imageData: ImageData, cell: number): ImageData => {
+const imageToPixels = (imageData: ImageData, cell: number, palette: IRGBPixel[]): ImageData => {
     const {data, width, height} = imageData;
     const lineSize = width * 4;
     const clustersOfHorizontally = width / cell;
@@ -22,13 +23,20 @@ const imageToPixels = (imageData: ImageData, cell: number): ImageData => {
             colorsStore.red/=cellArea;
             colorsStore.green/=cellArea;
             colorsStore.blue/=cellArea;
+
+            const {idx} = palette.reduce((acc, {r,g,b}, idx) => {
+                const fi = 30 * Math.pow(r - colorsStore.red, 2) + 59 * Math.pow(g - colorsStore.green, 2) + 11 * Math.pow(b - colorsStore.blue, 2);
+                return fi < acc.fi ? {idx, fi} : acc;
+            }, {idx: 0, fi: Number.MAX_VALUE});
+            const suitable = palette[idx];
+
             for (let itr = 0; itr < cell; itr++) {
                 const position = startPosition + itr * lineSize;
                 for (let pxl = 0; pxl < cell; pxl++) {
                     const pxlPosition = position + pxl * 4;
-                    data[pxlPosition] = colorsStore.red;
-                    data[pxlPosition + 1] = colorsStore.green;
-                    data[pxlPosition + 2] = colorsStore.blue;
+                    data[pxlPosition] = suitable.r;
+                    data[pxlPosition + 1] = suitable.g;
+                    data[pxlPosition + 2] = suitable.b;
                 }
             }
         }

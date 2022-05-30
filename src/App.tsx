@@ -29,7 +29,7 @@ function App() {
         },
         baw: true,
         edges: false,
-        colorCount: 4,
+        colorCount: 2,
     })
 
 

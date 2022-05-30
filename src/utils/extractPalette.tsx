@@ -4,7 +4,7 @@ export interface IRGBPixel {
     b: number;
 }
 
-const extractPalette = ({data}: ImageData, ): IRGBPixel[] => {
+const extractPalette = ({data}: ImageData, colorsCount: number): IRGBPixel[] => {
     const colors: IRGBPixel[] = [];
     for (let i = 0; i < data.length; i += 4) {
         colors.push({
@@ -48,9 +48,7 @@ const extractPalette = ({data}: ImageData, ): IRGBPixel[] => {
     };
 
     const quantization = (colors: IRGBPixel[], depth: number): IRGBPixel[] => {
-        const MAX_DEPTH = 4;
-
-        if (depth === MAX_DEPTH || colors.length === 0) {
+        if (depth === colorsCount || colors.length === 0) {
             const color = colors.reduce(
                 (prev, curr) => {
                     prev.r += curr.r;
