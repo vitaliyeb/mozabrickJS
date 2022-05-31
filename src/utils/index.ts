@@ -9,3 +9,4 @@ import matrixToPicture from './matrixToPicture';
 import returnColor from './returnColor';
 import imageToPixels from './imageToPixels';
 import extractPalette from "./extractPalette";
+import debounce from "./debounce";

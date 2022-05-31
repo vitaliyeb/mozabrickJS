@@ -1,17 +1,30 @@
 import Range from "../ui-kit/Range";
-import React, {Dispatch} from "react";
-import {IRange, ITreatmentConfig} from "../../types";
+import React, {Dispatch, useEffect} from "react";
+import {ITreatmentConfig} from "../../types";
 
 type propsType = {
     updateConfig: Dispatch<Partial<ITreatmentConfig>>;
     config: ITreatmentConfig;
+    imageRef:  React.MutableRefObject<HTMLImageElement | null>;
 }
 
-const ControlPanel: React.FC<propsType> = ({updateConfig, config}) => {
+const ControlPanel: React.FC<propsType> = ({updateConfig, config, imageRef}) => {
     const {
         brightness,
-        contrast
+        contrast,
+        blur,
+        imageSize
     } = config;
+
+    useEffect(() => {
+        const image = new Image(imageSize.width, imageSize.height);
+        image.src = '/gachi.jpeg';
+        image.onload = () => {
+            imageRef.current = image;
+            updateConfig({loaded: true});
+        };
+    }, []);
+
 
     const changeValue = (key: keyof ITreatmentConfig) => {
         return (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,6 +43,11 @@ const ControlPanel: React.FC<propsType> = ({updateConfig, config}) => {
                 change={changeValue('contrast')}
                 label="Констраст"
                 {...contrast}
+            />
+            <Range
+                change={changeValue('blur')}
+                label="Размытие"
+                {...blur}
             />
         </div>
     )
